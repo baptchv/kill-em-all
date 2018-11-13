@@ -1,0 +1,11 @@
+{
+  "name": "kill-em-all",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/gr1tch32/kill-em-all.git",
+  "author": "Baptiste Chevallier <bchevallier73170@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "serverless-offline": "^3.31.3"
+  }
+}
