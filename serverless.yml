@@ -1,0 +1,14 @@
+service: listGenerator
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  hello:
+    handler: handler.generationHandler
+    events:
+      - http: POST /generator
+
+plugins:
+- serverless-offline
