@@ -7,5 +7,9 @@
   "license": "MIT",
   "devDependencies": {
     "serverless-offline": "^3.31.3"
+  },
+  "dependencies": {
+    "mongoose": "^5.3.12",
+    "ramda": "^0.25.0"
   }
 }
