@@ -5,10 +5,17 @@ provider:
   runtime: nodejs8.10
 
 functions:
-  hello:
-    handler: handler.generationHandler
+  generator:
+    handler: createMechants.generationHandler
     events:
       - http: POST /generator
+
+  getMechants:
+    handler: getMechants.getHandler
+    events:
+    - http: GET /getMechants
+
+
 
 plugins:
 - serverless-offline
