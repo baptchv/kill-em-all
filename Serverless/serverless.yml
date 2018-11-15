@@ -6,12 +6,12 @@ provider:
 
 functions:
   generator:
-    handler: createMechants.generationHandler
+    handler: ./Handlers/createMechants.generationHandler
     events:
       - http: POST /generator
 
   getMechants:
-    handler: getMechants.getHandler
+    handler: ./Handlers/getMechants.getHandler
     events:
     - http: GET /getMechants
 
