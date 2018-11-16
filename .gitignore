@@ -73,4 +73,5 @@ Temporary Items
 .nfs*
 
 /node_modules/
-/dockerApp/node_modules/
+
+Database/node_modules/
