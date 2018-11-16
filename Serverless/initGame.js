@@ -23,18 +23,3 @@ const list = [
   {town: 'Lille', points: 0},
   {town: 'Chambéry', points: 0}
 ];
-
-//const init = () => Villains.insertMany(list);
-// init().then(() => mongoose.disconnect());
-
-const generationHandler = async () => {
-  const genList = R.map(generate, list);
-  return {
-    status: 200,
-    body: 'OK'
-  };
-};
-
-module.exports = {
-  generationHandler
-};

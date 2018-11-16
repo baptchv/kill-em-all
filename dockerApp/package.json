@@ -1,0 +1,12 @@
+{
+  "name": "dockerApp",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "yarn start"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

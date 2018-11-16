@@ -5,6 +5,11 @@ provider:
   runtime: nodejs8.10
 
 functions:
+  initiation:
+    handler: ./Handlers/init.initation
+    events:
+    - http: POST /initiation
+
   generator:
     handler: ./Handlers/createMechants.generationHandler
     events:
