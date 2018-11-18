@@ -6,14 +6,14 @@ provider:
 
 functions:
   initiation:
-    handler: ./Handlers/init.initation
+    handler: ./Handlers/init.ranGen
     events:
     - http: POST /initiation
 
   generator:
-    handler: ./Handlers/createMechants.generationHandler
+    handler: ./Handlers/updateVillain.updateVillain
     events:
-      - http: POST /generator
+    - http: POST /updateField
 
   getMechants:
     handler: ./Handlers/getMechants.getHandler
