@@ -5,21 +5,35 @@ provider:
   runtime: nodejs8.10
 
 functions:
-  initiation:
-    handler: ./Handlers/init.ranGen
+  updateVillain:
+    handler: ./Handlers/villains.updateV
     events:
-    - http: POST /initiation
-
-  generator:
-    handler: ./Handlers/updateVillain.updateVillain
-    events:
-    - http: POST /updateField
+    - http: POST /updateV
 
   getMechants:
-    handler: ./Handlers/getMechants.getHandler
+    handler: ./Handlers/villains.getV
     events:
-    - http: GET /getMechants
+    - http: GET /getV
 
+  getPoney:
+    handler: ./Handlers/poney.updateP
+    events:
+    - http: POST /updateP
+
+  updatePoney:
+    handler: ./Handlers/poney.getP
+    events:
+    - http: GET /getP
+
+  getHero:
+    handler: ./Handlers/hero.updateH
+    events:
+    - http: POST /updateP
+
+  updateHero:
+    handler: ./Handlers/hero.getH
+    events:
+    - http: GET /getP
 
 
 plugins:

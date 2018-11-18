@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const R = require('ramda');
 
 mongoose.set('useNewUrlParser', true);
-mongoose.connect('mongodb://localhost:27017/Villains');
+mongoose.connect('mongodb://localhost:27017/resources');
 
 addNewRand = v => v + Math.random() * 1000;
 
-const generate = R.over(R.lensProp('points'), addNewRand);
+// const generate = R.over(R.lensProp('points'), addNewRand);
 
 const town = new mongoose.Schema({
   town: {type: String, required: true},
@@ -15,7 +15,7 @@ const town = new mongoose.Schema({
 
 const Villains = mongoose.model('Villains', town);
 
-const list = [
+const listVillains = [
   {town: 'Paris', points: 0},
   {town: 'Marseille', points: 0},
   {town: 'Bordeaux', points: 100},
@@ -24,17 +24,33 @@ const list = [
   {town: 'Chambéry', points: 0}
 ];
 
-const init = () => Villains.insertMany(list);
-init().then(() => mongoose.disconnect());
+const initVillains = () => Villains.insertMany(listVillains);
+initVillains().then(() => mongoose.disconnect());
 
-const ranGen = async () => {
-  const genList = R.map(generate, list);
-  return {
-    status: 200,
-    body: JSON.stringify('OK')
-  };
-};
+const poneyyy = new mongoose.Schema({
+  town: {type: String, required: true},
+  status: {type: Number, required: true}
+});
 
-module.exports = {
-  ranGen
-};
+const Poney = mongoose.model('Poney', poneyyy);
+
+const listPoney = [
+  {town: 'Paris', status: 1},
+  {town: 'Paris', status: 1},
+  {town: 'Paris', status: 1}
+];
+
+const initPoney = () => Poney.insertMany(listPoney);
+initPoney().then(() => mongoose.disconnect());
+
+// const ranGen = async () => {
+//   const genList = R.map(generate, list);
+//   return {
+//     status: 200,
+//     body: JSON.stringify('OK')
+//   };
+// };
+//
+// module.exports = {
+//   ranGen
+// };
