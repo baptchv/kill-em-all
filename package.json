@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/gr1tch32/kill-em-all.git",
+  "author": "Baptiste Chevallier <bchevallier73170@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "sls offline start --useSeparateProcesses"
+  },
+  "devDependencies": {
+    "serverless": "^1.32.0",
+    "serverless-offline": "^3.31.3"
+  }
+}

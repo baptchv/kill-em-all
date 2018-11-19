@@ -43,6 +43,22 @@ const listPoney = [
 const initPoney = () => Poney.insertMany(listPoney);
 initPoney().then(() => mongoose.disconnect());
 
+const hero = new mongoose.Schema({
+  name: {type: String, required: true},
+  town: {type: String, required: true},
+  score: {type: Number, required: true}
+});
+
+const Hero = mongoose.model('Hero', hero);
+
+const listHero = [
+  {name:'BarMan',town: 'Paris', score: 0}
+];
+
+const initHero = () => Hero.insertMany(listHero);
+initHero().then(()=>mongoose.disconnect());
+
+
 // const ranGen = async () => {
 //   const genList = R.map(generate, list);
 //   return {

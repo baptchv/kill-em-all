@@ -17,10 +17,9 @@ const update = async (/*Nom de la ville*/) => {
 
 const get = async () => {
   const poneyList = await Poney.find({}, {town: 1, status: 1, _id: 0}).exec();
-  console.log(poneyList);
   return {
     status: 200,
-    body: JSON.stringify('Success')
+    body: JSON.stringify(poneyList)
   };
 };
 

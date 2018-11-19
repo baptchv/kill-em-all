@@ -1,16 +1,31 @@
-'use strict';
+const rp = require('request-promise');
+const R = require('ramda');
 
-const express = require('express');
+const getPoney = {
+  method: 'POST',
+  uri: 'http://localhost:3000/updateH',
+  body: {
+    a:1
+  },
+  json: true // Automatically stringifies the body to JSON
+};
 
-// Constants
-const PORT = 8080;
-const HOST = 'localhost';
+const process = (v) => {
+  v.town = 'Yolo';
+  v.status = 10;
+};
 
-// App
-const app = express();
-app.get('/', (req, res) => {
-  res.send('Hello world\n');
-});
+rp(getPoney)
+  .then(function (parsedBody,response) {
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+    console.log('Request OK');
+    console.log(response);
+
+    // R.map(process,response);
+    //
+    // console.log(response);
+
+  })
+  .catch(function (err) {
+    console.log('ERROR')
+  });

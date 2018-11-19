@@ -28,12 +28,12 @@ functions:
   getHero:
     handler: ./Handlers/hero.updateH
     events:
-    - http: POST /updateP
+    - http: POST /updateH
 
   updateHero:
     handler: ./Handlers/hero.getH
     events:
-    - http: GET /getP
+    - http: GET /getH
 
 
 plugins:
