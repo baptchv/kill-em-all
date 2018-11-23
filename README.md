@@ -4,10 +4,27 @@ Projet JS ingé 3
 
 git clone https://github.com/gr1tch32/kill-em-all
 
-Ouvrir le projet avec Webstorm
+# 1
+Lancer un docker avec mongo dessus
 
-En bas a droite se mettre sur SA propre branche. 
+# 2
+Dans le dossier kill-em-all/Serverless/Handler -->
 
-Commit et push UNIQUEMENT sur sa branche pour par niquer le boulot des autres. 
+```js
+node init.js
+```
 
-Bisous
+# 3
+Dans le dossier kill-em-all/Serveless -->
+```js
+yarn
+yarn start
+```
+
+# 4
+Dans le dossier kill-em-all/dockerApp -->
+```js
+node server.js
+```
+
+Et là il devrait y avoir du résultat !
