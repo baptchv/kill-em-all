@@ -10,18 +10,20 @@ addNewRand = v => v + Math.random() * 1000;
 
 const town = new mongoose.Schema({
   town: {type: String, required: true},
+  longitude: {type: Number, required:true},
+  latitude: {type: Number, required:true},
   points: {type: Number, required: true}
 });
 
 const Villains = mongoose.model('Villains', town);
 
 const listVillains = [
-  {town: 'Paris', points: 0},
-  {town: 'Marseille', points: 0},
-  {town: 'Bordeaux', points: 100},
-  {town: 'Montpellier', points: 0},
-  {town: 'Lille', points: 0},
-  {town: 'Chambéry', points: 0}
+  {town: 'Paris', longitude: 2.34,latitude: 48.86,points: 2000},
+  {town: 'Marseille', longitude: 5.4,latitude: 43.3,points: 3000},
+  {town: 'Bordeaux', longitude: -0.57,latitude: 44.83,points: 100},
+  {town: 'Montpellier', longitude: 3.87,latitude: 43.61,points: 768},
+  {town: 'Lille', longitude: 3.05,latitude: 50.62,points:3456},
+  {town: 'Chambéry', longitude: 5.91,latitude: 45.56,points: 9875}
 ];
 
 const initVillains = () => Villains.insertMany(listVillains);
@@ -29,15 +31,17 @@ initVillains().then(() => mongoose.disconnect());
 
 const poneyyy = new mongoose.Schema({
   town: {type: String, required: true},
+  longitude: {type: Number, required:true},
+  latitude: {type: Number, required:true},
   status: {type: Number, required: true}
 });
 
 const Poney = mongoose.model('Poney', poneyyy);
 
 const listPoney = [
-  {town: 'Paris', status: 1},
-  {town: 'Paris', status: 1},
-  {town: 'Paris', status: 1}
+  {town: 'Paris', longitude: 2.34,latitude: 48.86,status: 1},
+  {town: 'Paris', longitude: 2.34,latitude: 48.86,status: 1},
+  {town: 'Paris', longitude: 2.34,latitude: 48.86,status: 1}
 ];
 
 const initPoney = () => Poney.insertMany(listPoney);
@@ -46,13 +50,15 @@ initPoney().then(() => mongoose.disconnect());
 const hero = new mongoose.Schema({
   name: {type: String, required: true},
   town: {type: String, required: true},
+  longitude: {type: Number, required:true},
+  latitude: {type: Number, required:true},
   score: {type: Number, required: true}
 });
 
 const Hero = mongoose.model('Hero', hero);
 
 const listHero = [
-  {name:'BarMan',town: 'Paris', score: 0}
+  {name:'BarMan',town: 'Paris', longitude: 2.34,latitude: 48.86,score: 0}
 ];
 
 const initHero = () => Hero.insertMany(listHero);

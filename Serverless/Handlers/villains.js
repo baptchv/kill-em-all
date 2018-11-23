@@ -4,38 +4,24 @@ const R = require('ramda');
 
 mongoose.set('useNewUrlParser', true);
 
-let value = 230;
-let max = 0;
-
-const processing = v => {
-  v.points >= max ? max = v.points : false;
-};
-
-const update = async (/*Nom de la ville*/) => {
-  await Villains.updateOne({town: 'Paris'}, {points: value});
-
-  const modifiedField = await Villains.findOne({town: 'Paris'});
-  modifiedField.points = value ? console.log('Champs modifie avec succes') :
-    console.log('Champs non modifié');
-
+const update = async rep => {
+  const town = JSON.parse(rep.body).town;
+  // const aze = await Villains.updateOne({town},{points: 0}).exec();
   return {
     status: 200,
-    body: JSON.stringify('OK UPDATE')
+    body: JSON.stringify('Coucou')
   };
 };
 
 const get = async () => {
-  const villainsList = await Villains.find({}, {town: 1, points: 1, _id: 0})
+  const villainsList = await Villains.find({},
+    {town: 1, longitude: 1, latitude: 1, points: 1, _id: 0})
     .exec();
-  R.map(processing, villainsList);
-  console.log(max);
-  console.log(villainsList);
   return {
     status: 200,
-    body: JSON.stringify('Success')
+    body: JSON.stringify(villainsList)
   };
 };
-
 
 module.exports = {
   getV: get,
