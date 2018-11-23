@@ -20,7 +20,7 @@ const Villains = mongoose.model('Villains', town);
 const listVillains = [
   {town: 'Paris', longitude: 2.34,latitude: 48.86,points: 2000},
   {town: 'Marseille', longitude: 5.4,latitude: 43.3,points: 3000},
-  {town: 'Bordeaux', longitude: -0.57,latitude: 44.83,points: 100},
+  {town: 'Bordeaux', longitude: -0.57, latitude: 44.83, points: 1000},
   {town: 'Montpellier', longitude: 3.87,latitude: 43.61,points: 768},
   {town: 'Lille', longitude: 3.05,latitude: 50.62,points:3456},
   {town: 'Chambéry', longitude: 5.91,latitude: 45.56,points: 9875}

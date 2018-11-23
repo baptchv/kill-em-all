@@ -75,10 +75,12 @@ const main = async () => {
   const selectedHero = await getHero();
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
+  console.log(bestCity);
   const aze = await Promise.all([
     updateTown(bestCity),
     updateHero(bestCity, selectedHero)
   ]);
+
 };
 
 main().then(() => {});

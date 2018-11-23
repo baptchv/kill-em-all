@@ -25,12 +25,12 @@ functions:
     events:
     - http: GET /getP
 
-  getHero:
+  updateHero:
     handler: ./Handlers/hero.updateH
     events:
     - http: POST /updateH
 
-  updateHero:
+  getHero:
     handler: ./Handlers/hero.getH
     events:
     - http: GET /getH

@@ -4,9 +4,11 @@ const R = require('ramda');
 
 mongoose.set('useNewUrlParser', true);
 
-const update = async rep => {
-  const town = JSON.parse(rep.body).town;
-  // const aze = await Villains.updateOne({town},{points: 0}).exec();
+const update = async req => {
+  const body = JSON.parse(R.prop('body', req));
+  const town = R.prop('town', body);
+  // const hero = R.prop('hero', body);
+  const aze = await Villains.updateOne({town}, {points: 0}).exec();
   return {
     status: 200,
     body: JSON.stringify('Coucou')
