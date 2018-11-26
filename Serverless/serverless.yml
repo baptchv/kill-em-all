@@ -10,6 +10,11 @@ functions:
     events:
     - http: POST /updateV
 
+  resetVillain:
+    handler: ./Handlers/villains.resetV
+    events:
+    - http: POST /resetV
+
   getMechants:
     handler: ./Handlers/villains.getV
     events:

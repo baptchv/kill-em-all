@@ -4,6 +4,8 @@ const d3 = require('d3');
 
 const fixedPart = 'http://localhost:3000';
 
+let index = 0;
+
 const postSomething = (body, path) => rp({
   method: 'POST',
   url: `${fixedPart}${path}`,
@@ -18,6 +20,8 @@ const getSomething = path => rp({
 });
 
 const updateTown = town => postSomething(town, '/updateV');
+
+const resetTown = town => postSomething(town, '/resetV');
 
 const updateHero = (town, hero) => postSomething({town, hero}, '/updateH');
 
@@ -57,17 +61,18 @@ const findBestRatio = (acc, v) => {
 
 const processingVillains = (cities, hero) => {
   console.log(`
-    Hero ${hero.name} received
-    he has ${hero.score} points  
-    List of villains received ...
-    Processing ... 
+    ${hero.name} : ${hero.score} pts 
+    Calculating best route ... 
     `);
   const bestCity = R.pipe(
     R.map(findBestCity(hero)),
     R.reduce(findBestRatio, {ratio: -Infinity}),
   )(cities);
-  console.log(
-    `The selected town is ${bestCity.town}, the hero will earn ${bestCity.points} points`);
+  console.log(`
+    The selected town is ${bestCity.town}, 
+    + ${bestCity.points} points for ${hero.name}
+    ____________________________________________
+    `);
   return bestCity;
 };
 
@@ -75,13 +80,15 @@ const main = async () => {
   const selectedHero = await getHero();
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
-  console.log(bestCity);
-  const aze = await Promise.all([
-    updateTown(bestCity),
+  const heroMoves = await Promise.all([
+    resetTown(bestCity),
     updateHero(bestCity, selectedHero)
   ]);
-
+  const ranTown = await updateTown(selectedHero);
 };
 
-main().then(() => {});
+setInterval(() =>{
+  main().then(() => {});
+},5000);
+
 

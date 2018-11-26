@@ -4,14 +4,24 @@ const R = require('ramda');
 
 mongoose.set('useNewUrlParser', true);
 
-const update = async req => {
+const reset = async req => {
   const body = JSON.parse(R.prop('body', req));
   const town = R.prop('town', body);
-  // const hero = R.prop('hero', body);
   const aze = await Villains.updateOne({town}, {points: 0}).exec();
   return {
     status: 200,
-    body: JSON.stringify('Coucou')
+    body: JSON.stringify(aze)
+  };
+};
+
+const update = async req => {
+  const body = JSON.parse(R.prop('body', req));
+  const town = R.prop('town', body);
+  const aze = await Villains.updateOne({town},
+    {points: Math.round(Math.random() * 10000)});
+  return {
+    status: 200,
+    body: JSON.stringify(aze)
   };
 };
 
@@ -27,5 +37,6 @@ const get = async () => {
 
 module.exports = {
   getV: get,
+  resetV: reset,
   updateV: update
 };

@@ -11,8 +11,8 @@ const update = async req => {
   const aze = await Hero.updateOne({name: R.prop('name', hero)}, {
     town: R.prop('town', town),
     $inc: {score: R.prop('points', town)},
-    longitude: R.prop('points', town),
-    latitude: R.prop('points', town),
+    longitude: R.prop('longitude', town),
+    latitude: R.prop('latitude', town),
   }).exec();
   return {
     status: 200,
