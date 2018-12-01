@@ -8,5 +8,18 @@
   "devDependencies": {
     "serverless": "^1.32.0",
     "serverless-offline": "^3.31.3"
+  },
+  "dependencies": {
+    "sanctuary": "^0.15.0"
+  },
+  "xo": {
+    "space": 2,
+    "rules": {
+      "max-len": [
+        "error",
+        80,
+        2
+      ]
+    }
   }
 }

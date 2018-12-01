@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Villains = require('../Models/Villains');
 const R = require('ramda');
+const Villains = require('../Models/villains');
 
 mongoose.set('useNewUrlParser', true);
 

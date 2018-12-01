@@ -1,22 +1,24 @@
 const mongoose = require('mongoose');
-const Poney = require('../Models/Poney');
 const R = require('ramda');
+const Poney = require('../Models/poney');
 
 mongoose.set('useNewUrlParser', true);
 
-let status = 0;
+const status = 0;
 
-const update = async (/*Nom de la ville*/) => {
-  await Poney.updateOne({town: 'Paris'}, {status: status});
+const update = async req => {
+  const body = JSON.parse(R.prop('body', req));
+  await Poney.updateOne({town: 'Paris'}, {status});
 
   return {
     status: 200,
-    body: JSON.stringify('OK UPDATE')
+    body: JSON.stringify('Update Poney success')
   };
 };
 
 const get = async () => {
-  const poneyList = await Poney.find({}, {town: 1, longitude:1, latitude:1,status: 1, _id: 0}).exec();
+  const poneyList = await Poney.find({},
+    {town: 1, longitude: 1, latitude: 1, status: 1, _id: 0}).exec();
   return {
     status: 200,
     body: JSON.stringify(poneyList)

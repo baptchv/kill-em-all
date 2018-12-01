@@ -1,10 +1,8 @@
 const rp = require('request-promise');
 const R = require('ramda');
-const d3 = require('d3');
+const S = require('sanctuary');
 
 const fixedPart = 'http://localhost:3000';
-
-let index = 0;
 
 const postSomething = (body, path) => rp({
   method: 'POST',
@@ -34,9 +32,9 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   const dLat = deg2rad(lat2 - lat1);
   const dLon = deg2rad(lon2 - lon1);
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    (Math.sin(dLat / 2) * Math.sin(dLat / 2)) +
+    (Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2));
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
@@ -59,6 +57,23 @@ const findBestRatio = (acc, v) => {
   )(ratio);
 };
 
+const processingHeroes = heroes => {
+
+  const movingList = R.filter(R.pipe(R.prop('isMoving'), R.not), heroes);
+
+  const bestHero = R.ifElse(
+    R.isEmpty,
+    R.always(), //Maybe.Nothing
+    R.nth(0)
+  )(movingList);
+
+  console.log(bestHero);
+
+  console.log(`Selected Hero is ${R.prop('name', bestHero)}`);
+
+  return bestHero;
+};
+
 const processingVillains = (cities, hero) => {
   console.log(`
     ${hero.name} : ${hero.score} pts 
@@ -71,24 +86,27 @@ const processingVillains = (cities, hero) => {
   console.log(`
     The selected town is ${bestCity.town}, 
     + ${bestCity.points} points for ${hero.name}
-    ____________________________________________
     `);
   return bestCity;
 };
 
 const main = async () => {
-  const selectedHero = await getHero();
+  const heroes = await getHero();
+  const selectedHero = await processingHeroes(heroes);
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
-  const heroMoves = await Promise.all([
+  await Promise.all([
     resetTown(bestCity),
     updateHero(bestCity, selectedHero)
   ]);
-  const ranTown = await updateTown(selectedHero);
+  await updateTown(selectedHero);
+
+  console.log(`
+  Travelling to ${bestCity.town} ...
+  ___________________________________________
+  `);
 };
 
-setInterval(() =>{
+setInterval(() => {
   main().then(() => {});
-},5000);
-
-
+}, 100);
