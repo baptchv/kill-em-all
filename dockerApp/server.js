@@ -27,6 +27,8 @@ const getTown = () => getSomething('/getV');
 
 const getHero = () => getSomething('/getH');
 
+const deg2rad = deg => deg * (Math.PI / 180);
+
 const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   const R = 6371;
   const dLat = deg2rad(lat2 - lat1);
@@ -39,7 +41,7 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   return R * c;
 };
 
-const deg2rad = deg => deg * (Math.PI / 180);
+
 
 const findBestCity = R.curry((hero, v) => {
   const p = R.prop(R.__, v);
@@ -90,9 +92,8 @@ const processingVillains = (cities, hero) => {
   return bestCity;
 };
 
-const main = async () => {
-  const heroes = await getHero();
-  const selectedHero = await processingHeroes(heroes);
+const aHeroIsFree = async (selectedHero) => {
+
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
   await Promise.all([
@@ -105,6 +106,17 @@ const main = async () => {
   Travelling to ${bestCity.town} ...
   ___________________________________________
   `);
+};
+
+const main = async () => {
+  const heroes = await getHero();
+  const selectedHero = await processingHeroes(heroes);
+
+  R.ifElse(
+    R.isEmpty,
+    R.tap(console.log('Not Free')),
+    R.tap(aHeroIsFree)
+  )(selectedHero);
 };
 
 setInterval(() => {
