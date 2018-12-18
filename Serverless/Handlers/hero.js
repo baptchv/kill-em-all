@@ -11,7 +11,7 @@ const update = async req => {
     longitude: R.prop('longitude', town),
     latitude: R.prop('latitude', town),
     isMoving: true,
-    eta: R.prop('distance', town)
+    //eta: a//Moment JS
   }).exec();
   return {
     status: 200,

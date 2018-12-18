@@ -1,6 +1,11 @@
 const rp = require('request-promise');
 const R = require('ramda');
-const S = require('sanctuary');
+const Maybe = require('sanctuary-maybe');
+const googleMapsClient = require('@google/maps').createClient({
+  key: ''
+});
+
+// Maps API KEY
 
 const fixedPart = 'http://localhost:3000';
 
@@ -41,8 +46,6 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   return R * c;
 };
 
-
-
 const findBestCity = R.curry((hero, v) => {
   const p = R.prop(R.__, v);
   return R.assoc('distance',
@@ -63,15 +66,15 @@ const processingHeroes = heroes => {
 
   const movingList = R.filter(R.pipe(R.prop('isMoving'), R.not), heroes);
 
+  console.log(movingList);
+
   const bestHero = R.ifElse(
     R.isEmpty,
-    R.always(), //Maybe.Nothing
+    R.always(Maybe.Nothing),
     R.nth(0)
   )(movingList);
 
   console.log(bestHero);
-
-  console.log(`Selected Hero is ${R.prop('name', bestHero)}`);
 
   return bestHero;
 };
@@ -94,6 +97,7 @@ const processingVillains = (cities, hero) => {
 
 const aHeroIsFree = async (selectedHero) => {
 
+  console.log(`Selected Hero is ${R.prop('name', selectedHero)}`);
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
   await Promise.all([
@@ -101,22 +105,37 @@ const aHeroIsFree = async (selectedHero) => {
     updateHero(bestCity, selectedHero)
   ]);
   await updateTown(selectedHero);
-
   console.log(`
   Travelling to ${bestCity.town} ...
   ___________________________________________
   `);
 };
 
+const checkStatus = (hero) => {
+  R.ifElse(
+    R.prop('eta', hero) - < = 0,
+    updateHero(),
+    R.always()
+  )();
+};
+
+const broker = async (heroes) => {
+  R.map(checkStatus, heroes);
+};
+
 const main = async () => {
+
   const heroes = await getHero();
+
   const selectedHero = await processingHeroes(heroes);
 
   R.ifElse(
     R.isEmpty,
-    R.tap(console.log('Not Free')),
-    R.tap(aHeroIsFree)
+    R.tap(() => console.log('Not Free')),
+    aHeroIsFree
   )(selectedHero);
+
+  await broker(heroes);
 };
 
 setInterval(() => {
