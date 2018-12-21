@@ -8,8 +8,6 @@ const update = async req => {
   const aze = await Hero.updateOne({name: R.prop('name', hero)}, {
     town: R.prop('town', town),
     $inc: {score: R.prop('points', town)},
-    longitude: R.prop('longitude', town),
-    latitude: R.prop('latitude', town),
     isMoving: true,
     //eta: a//Moment JS
   }).exec();
@@ -20,8 +18,7 @@ const update = async req => {
 };
 
 const get = async () => {
-  const listHero = await Hero.find({},
-    {_id: 0});
+  const listHero = await Hero.find({});
   return {
     status: 200,
     body: JSON.stringify(listHero)

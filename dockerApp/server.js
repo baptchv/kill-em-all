@@ -5,8 +5,6 @@ const googleMapsClient = require('@google/maps').createClient({
   key: ''
 });
 
-// Maps API KEY
-
 const fixedPart = 'http://localhost:3000';
 
 const postSomething = (body, path) => rp({
@@ -32,28 +30,31 @@ const getTown = () => getSomething('/getV');
 
 const getHero = () => getSomething('/getH');
 
-const deg2rad = deg => deg * (Math.PI / 180);
+// const deg2rad = deg => deg * (Math.PI / 180);
 
-const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
-  const R = 6371;
-  const dLat = deg2rad(lat2 - lat1);
-  const dLon = deg2rad(lon2 - lon1);
-  const a =
-    (Math.sin(dLat / 2) * Math.sin(dLat / 2)) +
-    (Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2));
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
+const callGoogleMaps = (heroTown, targetTown) => {
+  return new Promise((resolve, reject) => {
+    googleMapsClient.distanceMatrix({
+      origins: heroTown,
+      destinations: targetTown
+    }).asPromise().then((response) => {resolve(response)})
+  })
 };
 
-const findBestCity = R.curry((hero, v) => {
-  const p = R.prop(R.__, v);
-  return R.assoc('distance',
-    getDistanceFromLatLonInKm(p('latitude'), v.longitude,
-      hero.latitude, hero.longitude), v);
+const getDistance = async (org, dest) => {
+  return await callGoogleMaps(org, dest)
+};
+
+const findBestCity = R.curry(async (hero, v) => {
+  const payload = await getDistance(hero.town, v.town);
+  const distance = await R.path(
+    ['json', 'rows', 0, 'elements', 0, 'distance', 'value'], payload);
+
+  return await R.assoc('distance', distance, v);
 });
 
 const findBestRatio = (acc, v) => {
+  console.log(R.prop('distance', v));
   const ratio = R.divide(R.prop('points', v), R.prop('distance', v) || 1);
   return R.ifElse(
     R.lte(R.prop('ratio', acc)),
@@ -65,29 +66,27 @@ const findBestRatio = (acc, v) => {
 const processingHeroes = heroes => {
 
   const movingList = R.filter(R.pipe(R.prop('isMoving'), R.not), heroes);
-
-  console.log(movingList);
-
   const bestHero = R.ifElse(
     R.isEmpty,
     R.always(Maybe.Nothing),
     R.nth(0)
   )(movingList);
 
-  console.log(bestHero);
-
   return bestHero;
 };
 
 const processingVillains = (cities, hero) => {
+
   console.log(`
     ${hero.name} : ${hero.score} pts 
     Calculating best route ... 
     `);
+
   const bestCity = R.pipe(
     R.map(findBestCity(hero)),
     R.reduce(findBestRatio, {ratio: -Infinity}),
   )(cities);
+
   console.log(`
     The selected town is ${bestCity.town}, 
     + ${bestCity.points} points for ${hero.name}
@@ -95,11 +94,14 @@ const processingVillains = (cities, hero) => {
   return bestCity;
 };
 
-const aHeroIsFree = async (selectedHero) => {
+const aHeroIsFree = async selectedHero => {
 
   console.log(`Selected Hero is ${R.prop('name', selectedHero)}`);
   const cities = await getTown();
+  console.log(cities);
   const bestCity = await processingVillains(cities, selectedHero);
+  console.log(bestCity);
+
   await Promise.all([
     resetTown(bestCity),
     updateHero(bestCity, selectedHero)
@@ -113,7 +115,7 @@ const aHeroIsFree = async (selectedHero) => {
 
 const checkStatus = (hero) => {
   R.ifElse(
-    R.prop('eta', hero) - < = 0,
+    R.prop('eta', hero),  // inférieur a l'heure system
     updateHero(),
     R.always()
   )();
@@ -126,7 +128,6 @@ const broker = async (heroes) => {
 const main = async () => {
 
   const heroes = await getHero();
-
   const selectedHero = await processingHeroes(heroes);
 
   R.ifElse(
@@ -138,6 +139,6 @@ const main = async () => {
   await broker(heroes);
 };
 
-setInterval(() => {
+// setInterval(() => {
   main().then(() => {});
-}, 100);
+// }, 100);

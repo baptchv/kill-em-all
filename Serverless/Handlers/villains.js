@@ -26,9 +26,7 @@ const update = async req => {
 };
 
 const get = async () => {
-  const villainsList = await Villains.find({},
-    {town: 1, longitude: 1, latitude: 1, points: 1, _id: 0})
-    .exec();
+  const villainsList = await Villains.find({});
   return {
     status: 200,
     body: JSON.stringify(villainsList)
