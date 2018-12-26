@@ -1,8 +1,9 @@
 const rp = require('request-promise');
 const R = require('ramda');
 const Maybe = require('sanctuary-maybe');
+const Promise = require('bluebird');
 const googleMapsClient = require('@google/maps').createClient({
-  key: ''
+  key: '' //put here your google api key
 });
 
 const fixedPart = 'http://localhost:3000';
@@ -32,6 +33,8 @@ const getHero = () => getSomething('/getH');
 
 // const deg2rad = deg => deg * (Math.PI / 180);
 
+/*
+Méthode baptiste
 const callGoogleMaps = (heroTown, targetTown) => {
   return new Promise((resolve, reject) => {
     googleMapsClient.distanceMatrix({
@@ -39,22 +42,52 @@ const callGoogleMaps = (heroTown, targetTown) => {
       destinations: targetTown
     }).asPromise().then((response) => {resolve(response)})
   })
-};
+};*/
 
-const getDistance = async (org, dest) => {
+/*
+Méthode Raph okayish
+const callGoogleMaps = (heroTown, targetTown) => {
+  googleMapsClient.distanceMatrix({
+    origins: heroTown,
+    destinations: targetTown,
+    travelMode: 'DRIVING'
+  }, function(response, status) {
+    //console.log('\n\nok\n\n');
+    console.log(response);
+    console.log(status);
+  });
+};*/
+
+async function getDistance(HeroTown, targetTown){
+  return Promise.promisify(googleMapsClient.distanceMatrix)({
+    origins: HeroTown,
+    destinations: targetTown
+  }).then((response)=> {
+    /*console.log("\x1b[41m\x1b[37m");
+    console.log(response);
+    console.log("\x1b[0m");*/
+    return response;
+  });
+}
+
+/*const getDistance = async (org, dest) => {
   return await callGoogleMaps(org, dest)
-};
+};*/
 
 const findBestCity = R.curry(async (hero, v) => {
-  const payload = await getDistance(hero.town, v.town);
+  const payload = await getDistance(hero.town, v.town).then();
   const distance = await R.path(
     ['json', 'rows', 0, 'elements', 0, 'distance', 'value'], payload);
-
-  return await R.assoc('distance', distance, v);
+  //console.log("\x1b[47m\x1b[30m"+distance+"\x1b[0m");
+  VillUp = R.assoc('distance', distance, v);
+  return await VillUp;
 });
 
+//probleme vient du bestratio
 const findBestRatio = (acc, v) => {
+  console.log("\x1b[41m");
   console.log(R.prop('distance', v));
+  console.log("\x1b[0m");
   const ratio = R.divide(R.prop('points', v), R.prop('distance', v) || 1);
   return R.ifElse(
     R.lte(R.prop('ratio', acc)),
@@ -82,11 +115,17 @@ const processingVillains = (cities, hero) => {
     Calculating best route ... 
     `);
 
+  //cette merde plante le truc
   const bestCity = R.pipe(
     R.map(findBestCity(hero)),
     R.reduce(findBestRatio, {ratio: -Infinity}),
   )(cities);
 
+// const bestCity = R.pipe(R.map(findBestCity(hero))(cities),R.reduce(findBestRatio,cities));
+
+//bestCity(hero);
+
+  console.log(bestCity);
   console.log(`
     The selected town is ${bestCity.town}, 
     + ${bestCity.points} points for ${hero.name}
@@ -98,7 +137,7 @@ const aHeroIsFree = async selectedHero => {
 
   console.log(`Selected Hero is ${R.prop('name', selectedHero)}`);
   const cities = await getTown();
-  console.log(cities);
+  //console.log(cities);
   const bestCity = await processingVillains(cities, selectedHero);
   console.log(bestCity);
 
@@ -137,8 +176,8 @@ const main = async () => {
   )(selectedHero);
 
   await broker(heroes);
-};
+};+
 
-// setInterval(() => {
+setInterval(() => {
   main().then(() => {});
-// }, 100);
+}, 1500);
