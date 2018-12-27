@@ -7,6 +7,7 @@ const villains = new mongoose.Schema({
   town: {type: String, required: true},
   longitude: {type: Number, required: true},
   latitude: {type: Number, required: true},
+  distance: {type: Number, required: false},
   points: {type: Number, required: true}
 });
 

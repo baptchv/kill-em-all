@@ -1,6 +1,7 @@
 const rp = require('request-promise');
 const R = require('ramda');
 const S = require('sanctuary');
+const moment = require('moment');
 
 const fixedPart = 'http://localhost:3000';
 
@@ -45,9 +46,11 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
 
 const findBestCity = R.curry((hero, v) => {
   const p = R.prop(R.__, v);
-  return R.assoc('distance',
+  const a = R.assoc('distance',
     getDistanceFromLatLonInKm(p('latitude'), v.longitude,
       hero.latitude, hero.longitude), v);
+  // console.log(a);
+  return a;
 });
 
 const findBestRatio = (acc, v) => {
@@ -59,21 +62,29 @@ const findBestRatio = (acc, v) => {
   )(ratio);
 };
 
+const broker = (heroes) => {
+
+};
+
 const processingHeroes = heroes => {
+
+  heroes.forEach((hero) => {
+
+    if (moment().isAfter(R.prop('eta', hero))) {
+      console.log('TRUUUUUUE');
+      hero.isMoving = false;
+      // attribution de points à ce moment là ?
+    }
+  });
 
   const movingList = R.filter(R.pipe(R.prop('isMoving'), R.not), heroes);
 
-  const bestHero = R.ifElse(
+  return R.ifElse(
     R.isEmpty,
-    R.always(), //Maybe.Nothing
+    R.always(null), //Maybe.Nothing
     R.nth(0)
   )(movingList);
 
-  console.log(bestHero);
-
-  console.log(`Selected Hero is ${R.prop('name', bestHero)}`);
-
-  return bestHero;
 };
 
 const processingVillains = (cities, hero) => {
@@ -85,6 +96,7 @@ const processingVillains = (cities, hero) => {
     R.map(findBestCity(hero)),
     R.reduce(findBestRatio, {ratio: -Infinity}),
   )(cities);
+
   console.log(`
     The selected town is ${bestCity.town}, 
     + ${bestCity.points} points for ${hero.name}
@@ -96,10 +108,11 @@ const aHeroIsFree = async (selectedHero) => {
 
   const cities = await getTown();
   const bestCity = await processingVillains(cities, selectedHero);
+
   await Promise.all([
     resetTown(bestCity),
     updateHero(bestCity, selectedHero)
-  ]);
+  ]).then();
   await updateTown(selectedHero);
 
   console.log(`
@@ -112,13 +125,26 @@ const main = async () => {
   const heroes = await getHero();
   const selectedHero = await processingHeroes(heroes);
 
-  R.ifElse(
-    R.isEmpty,
-    R.tap(console.log('Not Free')),
-    R.tap(aHeroIsFree)
-  )(selectedHero);
+  if (!R.isNil(selectedHero)) {
+    console.log(`Selected Hero is ${R.prop('name', selectedHero)}`);
+    const cities = await getTown();
+    const bestCity = await processingVillains(cities, selectedHero);
+    // console.log(R.prop('distance', bestCity));
+    await Promise.all([
+      resetTown(bestCity),
+      updateHero(bestCity, selectedHero)
+    ]).then();
+    await updateTown(selectedHero);
+
+    console.log(`
+  Travelling to ${bestCity.town} ...
+  ___________________________________________
+  `);
+  } else {
+    console.log('No one is free')
+  }
 };
 
 setInterval(() => {
   main().then(() => {});
-}, 100);
+}, 1000);

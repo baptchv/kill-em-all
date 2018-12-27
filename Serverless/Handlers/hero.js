@@ -1,5 +1,6 @@
 const R = require('ramda');
 const Hero = require('../Models/hero');
+const moment = require('moment');
 
 const update = async req => {
   const body = JSON.parse(R.prop('body', req));
@@ -11,7 +12,8 @@ const update = async req => {
     longitude: R.prop('longitude', town),
     latitude: R.prop('latitude', town),
     isMoving: true,
-    eta: R.prop('distance', town)
+    eta: moment().add(Math.round(Math.random() * 10000), 'ms')
+      .format("YYYY-MM-DDTHH:mm:ss")
   }).exec();
   return {
     status: 200,

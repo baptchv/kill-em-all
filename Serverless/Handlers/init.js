@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 mongoose.set('useNewUrlParser', true);
-mongoose.connect('mongodb://localhost:27017/resources');
+mongoose.connect('mongodb://localhost:27017/resources').then();
 
 // Const generate = R.over(R.lensProp('points'), addNewRand);
 
@@ -9,6 +10,7 @@ const town = new mongoose.Schema({
   town: {type: String, required: true},
   longitude: {type: Number, required: true},
   latitude: {type: Number, required: true},
+  distance: {type: Number, required: false},
   points: {type: Number, required: true}
 });
 
@@ -69,14 +71,20 @@ const hero = new mongoose.Schema({
   latitude: {type: Number, required: false},
   score: {type: Number, required: true},
   isMoving: {type: Boolean, required: true},
-  eta: {type: Number, required: false}
+  eta: {type: String, required: true}
 });
 
 const Hero = mongoose.model('Hero', hero);
 
 const listHero = [
-  {name: 'BarMan', score: 0, isMoving: false},
-  {name: 'RIPDaredevil', score: 0, isMoving: false}
+  {
+    name: 'BarMan', score: 0, isMoving: true,
+    eta: "1996-11-10T22:00:00"
+  },
+  {
+    name: 'RIPDaredevil', score: 0, isMoving: true,
+    eta: "1996-11-10T22:00:00"
+  }
 ];
 
 const initHero = () => Hero.insertMany(listHero);

@@ -10,6 +10,7 @@
     "serverless-offline": "^3.31.3"
   },
   "dependencies": {
+    "moment": "^2.23.0",
     "sanctuary": "^0.15.0"
   },
   "xo": {
