@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose.set('useNewUrlParser', true);
-mongoose.connect('mongodb://localhost:27017/resources').then();
+mongoose.connect('mongodb://0.0.0.0:27017/resources').then();
 
 // Const generate = R.over(R.lensProp('points'), addNewRand);
 
@@ -43,7 +43,7 @@ const listVillains = [
 ];
 
 const initVillains = () => Villains.insertMany(listVillains);
-// initVillains().then(() => mongoose.disconnect());
+// InitVillains().then(() => mongoose.disconnect());
 
 const poneyyy = new mongoose.Schema({
   town: {type: String, required: true},
@@ -61,7 +61,7 @@ const listPoney = [
 ];
 
 const initPoney = () => Poney.insertMany(listPoney);
-// initPoney().then(() => mongoose.disconnect());
+// InitPoney().then(() => mongoose.disconnect());
 
 const hero = new mongoose.Schema({
   name: {type: String, required: true},
@@ -78,16 +78,16 @@ const Hero = mongoose.model('Hero', hero);
 const listHero = [
   {
     name: 'BarMan', score: 0, isMoving: true,
-    eta: "1996-11-10T22:00:00"
+    eta: '1996-11-10T22:00:00'
   },
   {
     name: 'RIPDaredevil', score: 0, isMoving: true,
-    eta: "1996-11-10T22:00:00"
+    eta: '1996-11-10T22:00:00'
   }
 ];
 
 const initHero = () => Hero.insertMany(listHero);
-// initHero().then(() => mongoose.disconnect());
+// InitHero().then(() => mongoose.disconnect());
 
 const setData = () => {
   initHero().then(() => mongoose.disconnect());

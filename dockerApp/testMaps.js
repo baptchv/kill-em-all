@@ -1,9 +1,10 @@
 const R = require('ramda');
 const moment = require('moment');
-const key = 'AIzaSyD4rOj6jVXnr0aD8wfNM-xssjVw-RvHwvo'
+
+const key = 'AIzaSyD4rOj6jVXnr0aD8wfNM-xssjVw-RvHwvo';
 const googleMapsClient = require('@google/maps').createClient({
-  key: key,
-  Promise: Promise
+  key,
+  Promise
 });
 
 let a;
@@ -13,12 +14,14 @@ const google = (origin, dest) => {
     googleMapsClient.distanceMatrix({
       origins: origin,
       destinations: dest
-    }).asPromise().then((response) => {resolve(response)})
-  })
+    }).asPromise().then(response => {
+      resolve(response);
+    });
+  });
 };
 
 const getDistance = async (org, dest) => {
-  return await google(org, dest)
+  return await google(org, dest);
 };
 
 const distance = async () => {
@@ -29,7 +32,7 @@ const distance = async () => {
 
 distance().then(() => {});
 
-// const payload = getDistance('Lyon', 'Lille');
+// Const payload = getDistance('Lyon', 'Lille');
 //
 // const distance = payload.then((result) => {
 //   console.log(

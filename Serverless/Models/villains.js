@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 mongoose.set('useNewUrlParser', true);
-mongoose.connect('mongodb://localhost:27017/resources');
+mongoose.connect('mongodb://0.0.0.0:27017/resources');
 
 const villains = new mongoose.Schema({
   town: {type: String, required: true},

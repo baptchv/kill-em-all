@@ -1,5 +1,9 @@
 service: listGenerator
 
+custom:
+  serverless-offline:
+    host: 0.0.0.0
+
 provider:
   name: aws
   runtime: nodejs8.10
