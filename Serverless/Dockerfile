@@ -1,6 +1,6 @@
 FROM mhart/alpine-node
 
-WORKDIR /usr/scr/app
+WORKDIR /usr/src/app
 
 COPY package.json .
 

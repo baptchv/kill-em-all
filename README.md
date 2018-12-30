@@ -1,6 +1,9 @@
 # kill-em-all
 Projet JS ingé 3
 
+[![XO code style](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)]
+
+
 
 git clone https://github.com/gr1tch32/kill-em-all
 
