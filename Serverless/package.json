@@ -13,6 +13,7 @@
     "serverless-offline": "^3.31.3"
   },
   "dependencies": {
+    "moment": "^2.23.0",
     "mongoose": "^5.3.12",
     "ramda": "^0.25.0"
   }
