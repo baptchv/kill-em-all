@@ -5,18 +5,17 @@ services:
     depends_on:
     - db
     environment:
-    #      -
-    ports:
-    - ":"
+    - DB=mongodb://db:27017/resources
 
   api:
     build: ./dockerApp
     depends_on:
     - db
     environment:
-    #    -
+    - DB=mongodb://db:27017/resources
+    - PORT=8080
     ports:
-    - ":"
+    - "2121:8080"
 
   db:
     image: mongo

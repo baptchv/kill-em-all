@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const moment = require('moment');
 
 mongoose.set('useNewUrlParser', true);
 mongoose.connect('mongodb://localhost:27017/resources').then();

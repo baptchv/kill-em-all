@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "moment": "^2.23.0",
+    "mongoose": "^5.4.1",
     "sanctuary": "^0.15.0"
   },
   "xo": {

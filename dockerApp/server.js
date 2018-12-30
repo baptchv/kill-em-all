@@ -1,6 +1,5 @@
 const rp = require('request-promise');
 const R = require('ramda');
-const S = require('sanctuary');
 const moment = require('moment');
 
 const fixedPart = 'http://localhost:3000';
