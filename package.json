@@ -10,8 +10,8 @@
     "serverless-offline": "^3.31.3"
   },
   "dependencies": {
-    "bluebird": "^3.5.3",
     "moment": "^2.23.0",
+    "mongoose": "^5.4.1",
     "sanctuary": "^0.15.0"
   },
   "xo": {

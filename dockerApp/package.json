@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "yarn start"
+    "start": "node server.js"
   },
   "license": "MIT",
   "dependencies": {
-    "@google/maps": "^0.5.5",
-    "d3": "^5.7.0",
     "express": "^4.16.4",
+    "moment": "^2.23.0",
     "ramda": "^0.26.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2",
-    "sanctuary-maybe": "^1.0.0"
+    "request-promise": "^4.2.2"
   }
 }

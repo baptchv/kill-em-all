@@ -8,7 +8,7 @@ const hero = new mongoose.Schema({
   town: {type: String, required: true},
   score: {type: Number, required: true},
   isMoving: {type: Boolean, required: true},
-  eta: {type: Number, required: false}
+  eta: {type: String, required: true}
 });
 
 const Hero = mongoose.model('Hero', hero);
