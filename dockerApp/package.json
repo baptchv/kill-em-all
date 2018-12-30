@@ -9,6 +9,7 @@
   "dependencies": {
     "express": "^4.16.4",
     "moment": "^2.23.0",
+    "mongoose": "^5.4.1",
     "ramda": "^0.26.0",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"

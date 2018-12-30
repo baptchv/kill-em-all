@@ -43,7 +43,7 @@ const listVillains = [
 ];
 
 const initVillains = () => Villains.insertMany(listVillains);
-initVillains().then(() => mongoose.disconnect());
+// initVillains().then(() => mongoose.disconnect());
 
 const poneyyy = new mongoose.Schema({
   town: {type: String, required: true},
@@ -61,7 +61,7 @@ const listPoney = [
 ];
 
 const initPoney = () => Poney.insertMany(listPoney);
-initPoney().then(() => mongoose.disconnect());
+// initPoney().then(() => mongoose.disconnect());
 
 const hero = new mongoose.Schema({
   name: {type: String, required: true},
@@ -87,4 +87,14 @@ const listHero = [
 ];
 
 const initHero = () => Hero.insertMany(listHero);
-initHero().then(() => mongoose.disconnect());
+// initHero().then(() => mongoose.disconnect());
+
+const setData = () => {
+  initHero().then(() => mongoose.disconnect());
+  initPoney().then(() => mongoose.disconnect());
+  initVillains().then(() => mongoose.disconnect());
+};
+
+module.exports = {
+  insertData: setData
+};

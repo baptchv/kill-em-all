@@ -1,6 +1,9 @@
 const rp = require('request-promise');
 const R = require('ramda');
 const moment = require('moment');
+const init = require('./init.js');
+
+init.insertData();
 
 const fixedPart = 'http://localhost:3000';
 
@@ -40,8 +43,6 @@ const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 };
-
-
 
 const findBestCity = R.curry((hero, v) => {
   const p = R.prop(R.__, v);
