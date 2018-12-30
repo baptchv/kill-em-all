@@ -12,6 +12,7 @@
   "dependencies": {
     "moment": "^2.23.0",
     "mongoose": "^5.4.1",
+    "request-promise": "^4.2.2",
     "sanctuary": "^0.15.0"
   },
   "xo": {

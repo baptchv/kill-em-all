@@ -1,6 +1,6 @@
-const rp = require('request-promise');
 const R = require('ramda');
 const moment = require('moment');
+const rp = require('../node_modules/request-promise');
 const init = require('./init.js');
 
 init.insertData();
